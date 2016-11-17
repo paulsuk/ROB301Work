@@ -1,0 +1,29 @@
+import lejos.hardware.Button;
+import lejos.hardware.lcd.*;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3TouchSensor;
+import lejos.hardware.motor.*;
+
+	public class SimpleTrajectories {
+		public static void main(String[] args) throws Exception {
+			Motor.C.setSpeed(90);
+			Motor.C.forward();
+			Motor.B.setSpeed(40);
+			Motor.B.forward();
+			EV3TouchSensor touch = new EV3TouchSensor(SensorPort.S1);
+			LCD.clear();
+			while (!Button.ENTER.isDown()) {
+			int sampleSize = touch.sampleSize();
+			float[] touchsample = new float[sampleSize];
+			touch.fetchSample(touchsample, 0);
+			LCD.clear();
+			System.out.println(touchsample[0]);
+			if (touchsample[0] == 1){
+				Motor.C.stop();
+				Motor.B.stop();
+				Motor.C.rotate(-180);
+				}
+			}
+			touch.close();
+			}
+		}
